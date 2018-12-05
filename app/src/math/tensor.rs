@@ -20,6 +20,7 @@ pub fn position_to_index(position: &[usize], shape: &Shape) -> usize {
 
 // -- Tensor
 
+#[derive(Debug)]
 pub struct Tensor<T> {
     data: Vec<T>,
     shape: Shape,

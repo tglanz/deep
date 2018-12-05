@@ -1,5 +1,6 @@
 use std::ops::{Index};
 
+#[derive(Debug)]
 pub struct Shape {
     dimensions: Vec<usize>
 }
@@ -14,6 +15,7 @@ impl Shape {
     }
 }
 
+
 impl From<Vec<usize>> for Shape {
     fn from(dimensions: Vec<usize>) -> Self {
         Self {
@@ -26,6 +28,14 @@ impl From<usize> for Shape {
     fn from(dimension: usize) -> Self {
         Self {
             dimensions: vec![dimension]
+        }
+    }
+}
+
+impl From<(usize,)> for Shape {
+    fn from(dimensions: (usize,)) -> Self {
+        Self {
+            dimensions: vec![dimensions.0]
         }
     }
 }
