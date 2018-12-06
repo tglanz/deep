@@ -5,13 +5,8 @@ mod math;
 mod operations;
 mod computational_graph;
 
-use math::{Tensor};
-use operations::Operation;
-
-use computational_graph::{Graph, Node, Uniform};
-use computational_graph::Edge::{NodeNodeEdge, UniformNodeEdge};
-
 fn tensor_into_iterable() {
+    use math::Tensor;
     let tensor: Tensor<u16> = Tensor::default((3, 3, 3));
     for item in &tensor {
         println!("tensor[{:?}] == {:?}", item.index, item.value);
@@ -19,6 +14,7 @@ fn tensor_into_iterable() {
 }
 
 fn tensor_mutation() {
+    use math::Tensor;
     let mut tensor: Tensor<u16> = Tensor::default((2, 2, 2));
     tensor[vec![1, 1, 0]] = 111;
     tensor[1] = 222;
@@ -41,14 +37,23 @@ fn simple_graph() {
         (try changing stuff; keeping the graph in variable and remodify, etc...)
     */
 
-    let vector: Tensor<u16> = Tensor::default((3, 3));
-    let vector_uniform_id = 1;
+    use math::Tensor;
+    use computational_graph::{GraphBuilder, Edge};
+    use operations::Operation::{Add, Dot, LeakyRelu};
+    use computational_graph::Node::{
+        InputNode as Input,
+        ParameterNode as Parameter,
+        OperationNode as Operation
+    };
 
-    let matrix: Tensor<u16> = Tensor::default((3,));
-    let matrix_uniform_id = 2;
+    let input: Tensor<u16> = Tensor::default((3,));
+    let input_node_id = 0;
+
+    let weights: Tensor<u16> = Tensor::default((3, 3));
+    let weights_node_id = 1;
 
     let bias: Tensor<u16> = Tensor::default((3,));
-    let bias_uniform_id = 3;
+    let bias_node_id = 2;
 
     let dot_node_id = 1;
     let add_node_id = 2;
@@ -57,31 +62,28 @@ fn simple_graph() {
     /*
         the computation this graph does is
         leaky(matrix*vector + bias)
-     */
+    */
+    let graph = GraphBuilder::create()
+        // Set the input
+        .with_node(Input(input_node_id, input))
+        // Kernels
+        .with_node(Parameter(weights_node_id, weights))
+        .with_node(Parameter(bias_node_id, bias))
+        // Determine the operations
+        .with_node(Operation(dot_node_id, Dot))
+        .with_node(Operation(add_node_id, Add))
+        .with_node(Operation(leaky_node_id, LeakyRelu(0.57)))
+        // Set the data flow
+        .with_edge(Edge::new(0, input_node_id, dot_node_id))
+        .with_edge(Edge::new(1, weights_node_id, dot_node_id))
+        .with_edge(Edge::new(2, dot_node_id, add_node_id))
+        .with_edge(Edge::new(3, bias_node_id, add_node_id))
+        .with_edge(Edge::new(4, add_node_id, leaky_node_id))
+        // Bam
+        .build(0);
 
-    let graph = Graph::new(0)
-        // define the entries for the graph
-        .with_uniform(Uniform::new(matrix_uniform_id, matrix))
-        .with_uniform(Uniform::new(vector_uniform_id, vector))
-        .with_uniform(Uniform::new(bias_uniform_id, bias))
-        // define a node for dot operation
-        .with_node(Node::new(dot_node_id, Operation::Dot))
-        // define the operands into the dot node, notice that both originate from a uniform
-        .with_edge(UniformNodeEdge(1, (matrix_uniform_id, dot_node_id)))
-        .with_edge(UniformNodeEdge(2, (vector_uniform_id, dot_node_id)))
-        // define a node for add operation
-        .with_node(Node::new(add_node_id, Operation::Add))
-        // define the operands into the addd node, notice that one originate from the result from
-        // the dot operation node, the other from a uniform
-        .with_edge(NodeNodeEdge(3, (dot_node_id, add_node_id)))
-        .with_edge(UniformNodeEdge(4, (bias_uniform_id, add_node_id)))
-        // define a node for leaky operation
-        .with_node(Node::new(leaky_node_id, Operation::LeakyRelu(0.57)))
-        // define the (single) operand to the leaky node
-        .with_edge(NodeNodeEdge(5, (add_node_id, leaky_node_id)));
-
-    // just print the graph, it doesn't look pretty
-    println!("Graph created: {:?}", graph);
+    // just print the graph, looks kinda nice with #
+    println!("{:#?}", graph);
 }
 
 fn main() {

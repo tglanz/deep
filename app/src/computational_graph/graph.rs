@@ -5,16 +5,18 @@ pub type GraphId = u16;
 #[derive(Debug)]
 pub struct Graph {
     id: GraphId,
-    uniforms: Uniforms,
     nodes: Nodes,
     edges: Edges,
 }
 
-impl Graph {
-    pub fn new(id: GraphId) -> Self {
-        Graph {
-            id,
-            uniforms: Uniforms::new(),
+pub struct GraphBuilder {
+    nodes: Nodes,
+    edges: Edges,
+}
+
+impl GraphBuilder {
+    pub fn create() -> Self {
+        GraphBuilder {
             nodes: Nodes::new(),
             edges: Edges::new(),
         }
@@ -30,8 +32,11 @@ impl Graph {
         self
     }
 
-    pub fn with_uniform(mut self, uniform: Uniform) -> Self {
-        self.uniforms.push(uniform);
-        self
+    pub fn build(self, id: GraphId) -> Graph {
+        Graph {
+            id,
+            nodes: self.nodes,
+            edges: self.edges
+        }
     }
 }

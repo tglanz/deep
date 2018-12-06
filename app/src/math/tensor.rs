@@ -26,6 +26,12 @@ pub struct Tensor<T> {
     shape: Shape,
 }
 
+impl<T> Tensor<T> {
+    pub fn get_shape(&self) -> &Shape {
+        &self.shape
+    }
+}
+
 impl<T: Default> Tensor<T> {
     pub fn default<IntoShape: Into<Shape>>(into_shape: IntoShape) -> Self {
         let shape = into_shape.into();
