@@ -11,6 +11,16 @@ pub enum Node {
     OperationNode(NodeId, Operation),
 }
 
+impl Node {
+    pub fn get_id(&self) -> NodeId {
+        match *self {
+            Node::InputNode (id, _) => id,
+            Node::ParameterNode (id, _) => id,
+            Node::OperationNode (id, _) => id,
+        }
+    }
+}
+
 /* serde custom serialization for node...
 impl Serialize for Node {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>

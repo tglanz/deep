@@ -1,13 +1,6 @@
-use computational_graph::*;
-
-pub type GraphId = u16;
-
-#[derive(Debug)]
-pub struct Graph {
-    id: GraphId,
-    nodes: Nodes,
-    edges: Edges,
-}
+use super::graph::{Graph, GraphId};
+use super::node::{Node, Nodes};
+use super::edge::{Edge, Edges};
 
 pub struct GraphBuilder {
     nodes: Nodes,
@@ -33,10 +26,6 @@ impl GraphBuilder {
     }
 
     pub fn build(self, id: GraphId) -> Graph {
-        Graph {
-            id,
-            nodes: self.nodes,
-            edges: self.edges
-        }
+        Graph::new(id, self.nodes, self.edges)
     }
 }

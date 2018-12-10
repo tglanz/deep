@@ -1,10 +1,3 @@
-#![allow(dead_code)]
-#![allow(unused_imports)]
-
-mod math;
-mod operations;
-mod computational_graph;
-
 fn tensor_into_iterable() {
     use math::Tensor;
     let tensor: Tensor<u16> = Tensor::default((3, 3, 3));
@@ -38,9 +31,9 @@ fn simple_graph() {
     */
 
     use math::Tensor;
-    use computational_graph::{GraphBuilder, Edge};
+    use graph::{GraphBuilder, Edge};
     use operations::Operation::{Add, Dot, LeakyRelu};
-    use computational_graph::Node::{
+    use graph::Node::{
         InputNode as Input,
         ParameterNode as Parameter,
         OperationNode as Operation
