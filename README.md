@@ -1,5 +1,8 @@
 # deep
 
+# Open Issues
+- Problem description by example at playground: https://play.rust-lang.org/?version=stable&mode=debug&edition=2018&gist=08ef7319c1c1b65800d655c2d6176ca4
+
 # Graph for example
 ```
 Graph {
