@@ -1,6 +1,6 @@
 [package]
 name = "app"
 version = "0.1.0"
-authors = ["Tal Glanzman <tal.g@neuroblade-tech.com>"]
+authors = ["Tal Glanzman <talglanzman@gmail.com>"]
 
 [dependencies]

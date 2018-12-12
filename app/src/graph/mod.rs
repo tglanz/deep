@@ -1,6 +1,5 @@
 mod graph;
 mod graph_builder;
-mod edges_connections_maps;
 mod node;
 mod edge;
 
