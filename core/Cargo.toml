@@ -1,0 +1,10 @@
+[package]
+name = "deep_core"
+version = "0.1.0"
+authors = ["tglanz"]
+description = "deep prototype"
+repository = "https://github.com/tglanz/deep"
+readme = "readme.md"
+license-file = "license"
+
+[dependencies]
