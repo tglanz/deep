@@ -1,6 +1,6 @@
 [package]
 name = "deep_core"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["tglanz"]
 description = "deep prototype"
 repository = "https://github.com/tglanz/deep"
