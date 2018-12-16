@@ -1,5 +1,5 @@
-pub mod shape;
-pub mod tensor;
+mod shape;
+mod tensor;
 
 pub use self::shape::{Shape};
 pub use self::tensor::{Tensor};

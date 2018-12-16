@@ -1,11 +1,7 @@
-use super::node::{Node, Nodes};
-use super::edge::{Edge, Edges};
+use super::node::{Nodes};
+use super::edge::{Edges};
 
 pub type GraphId = u16;
-
-pub trait GraphVisitor {
-    fn visit_node<'a>(node: &'a Node, input_edges: &[&'a Edge], output_edges: &[&'a Edge]);
-}
 
 #[derive(Debug)]
 pub struct Graph {

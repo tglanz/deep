@@ -1,11 +1,7 @@
 use std::ops::{Index, IndexMut};
 use std::vec::*;
 
-use math::{Shape};
-
-pub enum Error {
-    ShapeMismatch
-}
+use super::{Shape};
 
 pub fn position_to_index(position: &[usize], shape: &Shape) -> usize {
     let mut result = position[0];

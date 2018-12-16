@@ -13,6 +13,15 @@ pub struct EdgesIndices {
 }
 
 impl EdgesIndices {
+
+    pub fn get_indices_from(&self, node_id: NodeId) -> Option<&Indices> {
+        self.indices_by_from.get(&node_id)
+    }
+
+    pub fn get_indices_to(&self, node_id: NodeId) -> Option<&Indices> {
+        self.indices_by_to.get(&node_id)
+    }
+
     pub fn from_graph(graph: &Graph) -> Self {
         Self::create(graph.get_nodes(), graph.get_edges())
     }
