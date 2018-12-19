@@ -26,6 +26,20 @@ impl<T> Tensor<T> {
     pub fn get_shape(&self) -> &Shape {
         &self.shape
     }
+
+    pub fn is_vector(&self) -> bool {
+        self.shape.rank() == 1
+    }
+
+    pub fn is_matrix(&self) -> bool {
+        self.shape.rank() == 2
+    }
+
+    pub fn apply_mut(&mut self, f: fn(&T) -> T) {
+        for element in self.data.iter_mut() {
+            *element = f(element);
+        }
+    }
 }
 
 impl<T: Default> Tensor<T> {
@@ -92,6 +106,21 @@ impl<T> Index<usize> for Tensor<T> {
 
 impl<T> IndexMut<usize> for Tensor<T> {
     fn index_mut<'a>(&'a mut self, index: usize) -> &'a mut T {
+        &mut self.data[index]
+    }
+}
+
+impl<T> Index<(usize, usize)> for Tensor<T> {
+    type Output = T;
+    fn index(&self, position: (usize, usize)) -> &Self::Output {
+        let index = position_to_index(&[position.0, position.1], &self.shape);
+        &self.data[index]
+    }
+}
+
+impl<T> IndexMut<(usize, usize)> for Tensor<T> {
+    fn index_mut<'a>(&'a mut self, position: (usize, usize)) -> &'a mut T {
+        let index = position_to_index(&[position.0, position.1], &self.shape);
         &mut self.data[index]
     }
 }

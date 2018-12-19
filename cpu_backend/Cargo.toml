@@ -1,0 +1,8 @@
+[package]
+name = "cpu_backend"
+version = "0.1.0"
+authors = ["tglanz"]
+edition = "2018"
+
+[dependencies]
+deep_core = { path = '../core' }

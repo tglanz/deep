@@ -10,5 +10,5 @@ pub mod traversal;
 
 pub use self::graph::{Graph};
 pub use self::graph_builder::{GraphBuilder};
-pub use self::tensor_descriptor::{TensorDescriptor};
+pub use self::tensor_descriptor::{TensorDescriptor, TensorId};
 pub use self::edges_indices::{EdgesIndices};

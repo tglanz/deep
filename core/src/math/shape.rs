@@ -10,6 +10,10 @@ impl Shape {
         self.dimensions.len()
     }
 
+    pub fn effective_rank(&self) -> usize {
+        self.dimensions.iter().filter(|&x| *x > 1).count()
+    }
+
     pub fn size(&self) -> usize {
         self.dimensions.iter().fold(1, |acc, x| acc * x)
     }

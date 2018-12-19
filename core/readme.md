@@ -1,4 +1,4 @@
-# deep-core
+# deep_core
 
 # Open Issues
 - [ ] design and api; operand implementation as a constant value, global to it's module

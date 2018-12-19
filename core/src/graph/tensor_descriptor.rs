@@ -1,6 +1,6 @@
 use math::{Shape};
 
-type TensorId = u16;
+pub type TensorId = u16;
 
 ///
 /// A reference to some arbitrary tensor.
