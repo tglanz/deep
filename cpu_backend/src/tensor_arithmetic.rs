@@ -91,8 +91,8 @@ impl TensorArithmetic for Tensor<u16> {
 
         if left_shape[1] != right_shape[0] {
             return Err(ArithmeticError::ShapesMismatch {
-                left: left_shape.clone(),
-                right: right_shape.clone(),
+                left_shape.clone(),
+                right_shape.clone(),
             });
         }
 
