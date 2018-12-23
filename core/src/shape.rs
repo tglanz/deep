@@ -10,10 +10,6 @@ impl Shape {
         self.dimensions.len()
     }
 
-    pub fn effective_rank(&self) -> usize {
-        self.dimensions.iter().filter(|&x| *x > 1).count()
-    }
-
     pub fn size(&self) -> usize {
         self.dimensions.iter().fold(1, |acc, x| acc * x)
     }
@@ -24,14 +20,6 @@ impl From<Vec<usize>> for Shape {
     fn from(dimensions: Vec<usize>) -> Self {
         Self {
             dimensions
-        }
-    }
-}
-
-impl From<usize> for Shape {
-    fn from(dimension: usize) -> Self {
-        Self {
-            dimensions: vec![dimension]
         }
     }
 }
@@ -68,7 +56,6 @@ impl From<(usize, usize, usize, usize)> for Shape {
     }
 }
 
-// -- Index
 impl Index<usize> for Shape {
     type Output = usize;
     fn index(&self, index: usize) -> &Self::Output {

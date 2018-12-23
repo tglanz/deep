@@ -1,9 +1,7 @@
 use std::collections::{HashMap};
 
 use super::super::{
-    math::{
-        Tensor,
-    },
+    Tensor,
     graph::{
         TensorId,
         traversal::{

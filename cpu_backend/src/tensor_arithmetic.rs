@@ -1,6 +1,8 @@
 use core::{
-    math::{
-        Tensor, Shape
+    Shape,
+    Tensor,
+    tensor::{
+        Classifications, Applications
     }
 };
 
@@ -9,48 +11,16 @@ pub enum ArithmeticError {
     ShapesMismatch(Shape, Shape),
 }
 
-fn check_sizes_match<T>(left: &Tensor<T>, right: &Tensor<T>) -> Option<ArithmeticError> {
-    if left.get_shape().size() == right.get_shape().size() {
-        None
-    } else {
-        Some(ArithmeticError::ShapesMismatch(
-            left.get_shape().clone(),
-            right.get_shape().clone())
-    }
-}
-
 trait TensorArithmetic {
-    fn zip(&self, other: &Tensor<u16>, zipper: fn(&u16, &u16) -> u16) -> Result<Tensor<u16>, ArithmeticError>;
-    fn zip_mut(&mut self, other: &Tensor<u16>, zipper: fn(&u16, &u16) -> u16) -> Result<(), ArithmeticError>;
+    fn multiply_scalar(&self, scalar: u16) -> Result<Tensor<u16>, ArithmeticError>;
     fn matrix_vector_multiplication(&self, vector: &Tensor<u16>) -> Result<Tensor<u16>, ArithmeticError>;
     fn matrix_matrix_multiplication(&self, matrix: &Tensor<u16>) -> Result<Tensor<u16>, ArithmeticError>;
 }
 
 impl TensorArithmetic for Tensor<u16> {
 
-    fn zip(&self, other: &Tensor<u16>, zipper: fn(&u16, &u16) -> u16) -> Result<Tensor<u16>, ArithmeticError> {
-        if let Some(error) = check_sizes_match(self, other) {
-            return Err(error);
-        }
-
-        let mut result = Tensor::default(self.get_shape().clone());
-        for idx in 0..self.get_shape().size() {
-            result[idx] = zipper(&self[idx], &other[idx]);
-        }
-
-        Ok(result)
-    }
-
-    fn zip_mut(&mut self, other: &Tensor<u16>, zipper: fn(&u16, &u16) -> u16) -> Result<(), ArithmeticError> {
-        if let Some(error) = check_sizes_match(self, other) {
-            return Err(error);
-        }
-
-        for idx in 0..self.get_shape().size() {
-            self[idx] = zipper(&self[idx], &other[idx]);
-        }
-
-        Ok(())
+    fn multiply_scalar(&self, scalar: u16) -> Result<Tensor<u16>, ArithmeticError> {
+        Ok(self.apply(|x| x * scalar))
     }
 
     fn matrix_vector_multiplication(&self, vector: &Tensor<u16>) -> Result<Tensor<u16>, ArithmeticError> {
@@ -66,9 +36,10 @@ impl TensorArithmetic for Tensor<u16> {
         let cols = self.get_shape()[1];
 
         if cols != vector.get_shape()[0] {
-            return Err(ArithmeticError::ShapesMismatch(
+            return Err(ArithmeticError::ShapesMismatch (
                 self.get_shape().clone(),
-                vector.get_shape().clone());
+                vector.get_shape().clone()
+            ));
         }
 
         let mut result_vector = Tensor::default((rows,));

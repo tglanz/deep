@@ -1,4 +1,4 @@
-use math::{Shape};
+use {Shape};
 
 pub type TensorId = u16;
 
