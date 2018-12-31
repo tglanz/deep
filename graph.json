@@ -1,0 +1,123 @@
+{
+  "id": 0,
+  "nodes": [
+    {
+      "InputNode": {
+        "id": 0,
+        "tensor_descriptor": {
+          "tensor_id": 0,
+          "shape": {
+            "dimensions": [
+              3
+            ]
+          }
+        }
+      }
+    },
+    {
+      "ParameterNode": {
+        "id": 1,
+        "tensor_descriptor": {
+          "tensor_id": 1,
+          "shape": {
+            "dimensions": [
+              3,
+              3
+            ]
+          }
+        }
+      }
+    },
+    {
+      "ParameterNode": {
+        "id": 2,
+        "tensor_descriptor": {
+          "tensor_id": 2,
+          "shape": {
+            "dimensions": [
+              3
+            ]
+          }
+        }
+      }
+    },
+    {
+      "OperationNode": {
+        "id": 1,
+        "operation": {
+          "Dot": null
+        }
+      }
+    },
+    {
+      "OperationNode": {
+        "id": 2,
+        "operation": {
+          "Add": null
+        }
+      }
+    },
+    {
+      "OperationNode": {
+        "id": 3,
+        "operation": {
+          "LeakyRelu": {
+            "scalar": 0.57
+          }
+        }
+      }
+    }
+  ],
+  "edges": [
+    {
+      "OperandEdge": {
+        "id": 0,
+        "connection": [
+          0,
+          1
+        ],
+        "operand": 0
+      }
+    },
+    {
+      "OperandEdge": {
+        "id": 1,
+        "connection": [
+          1,
+          1
+        ],
+        "operand": 1
+      }
+    },
+    {
+      "OperandEdge": {
+        "id": 2,
+        "connection": [
+          1,
+          2
+        ],
+        "operand": 0
+      }
+    },
+    {
+      "OperandEdge": {
+        "id": 3,
+        "connection": [
+          2,
+          2
+        ],
+        "operand": 0
+      }
+    },
+    {
+      "OperandEdge": {
+        "id": 4,
+        "connection": [
+          2,
+          3
+        ],
+        "operand": 0
+      }
+    }
+  ]
+}

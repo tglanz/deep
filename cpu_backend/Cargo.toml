@@ -1,6 +1,6 @@
 [package]
-name = "cpu_backend"
-version = "0.1.0"
+name = "deep_cpu_backend"
+version = "0.1.1"
 authors = ["tglanz"]
 edition = "2018"
 

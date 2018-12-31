@@ -4,7 +4,7 @@ use super::tensor_descriptor::{TensorDescriptor};
 pub type NodeId = u16;
 pub type Nodes = Vec<Node>;
 
-#[derive(Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 pub enum Node {
     InputNode { id: NodeId, tensor_descriptor: TensorDescriptor },
     ParameterNode { id: NodeId, tensor_descriptor: TensorDescriptor },

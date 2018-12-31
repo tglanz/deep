@@ -39,12 +39,12 @@ impl GraphBuilder {
         self
     }
 
-    pub fn with_input(self, id: NodeId, tensor_descriptor: TensorDescriptor) -> Self {
-        self.with_node(Node::InputNode { id, tensor_descriptor })
+    pub fn with_input(self, id: NodeId, tensor_descriptor: &TensorDescriptor) -> Self {
+        self.with_node(Node::InputNode { id, tensor_descriptor: tensor_descriptor.clone() })
     }
 
-    pub fn with_parameter(self, id: NodeId, tensor_descriptor: TensorDescriptor) -> Self {
-        self.with_node(Node::ParameterNode { id, tensor_descriptor })
+    pub fn with_parameter(self, id: NodeId, tensor_descriptor: &TensorDescriptor) -> Self {
+        self.with_node(Node::ParameterNode { id, tensor_descriptor: tensor_descriptor.clone() })
     }
 
     pub fn with_operation(self, id: NodeId, operation: Operation) -> Self {

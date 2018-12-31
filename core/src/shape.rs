@@ -1,6 +1,6 @@
 use std::ops::{Index};
 
-#[derive(Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Shape {
     dimensions: Vec<usize>
 }

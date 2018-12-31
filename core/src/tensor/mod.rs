@@ -22,10 +22,4 @@ impl<T> Tensor<T> {
     pub fn get_shape(&self) -> &Shape {
         &self.shape
     }
-
-    pub fn apply_mut(&mut self, f: fn(&T) -> T) {
-        for element in self.data.iter_mut() {
-            *element = f(element);
-        }
-    }
 }

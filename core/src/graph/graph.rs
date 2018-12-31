@@ -3,7 +3,7 @@ use super::edge::{Edges};
 
 pub type GraphId = u16;
 
-#[derive(Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Graph {
     id: GraphId,
     nodes: Nodes,

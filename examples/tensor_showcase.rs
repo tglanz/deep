@@ -1,6 +1,6 @@
-extern crate deep_core as core;
+extern crate deep;
 
-use core::{Tensor};
+use deep::core::Tensor;
 
 fn iterate_tensor(tensor: &Tensor<u16>) {
     println!("iterating tensor");

@@ -1,9 +1,7 @@
 use core::{
     Shape,
     Tensor,
-    tensor::{
-        Classifications, Applications
-    }
+    tensor::*
 };
 
 pub enum ArithmeticError {
@@ -61,10 +59,10 @@ impl TensorArithmetic for Tensor<u16> {
         let right_shape = matrix.get_shape();
 
         if left_shape[1] != right_shape[0] {
-            return Err(ArithmeticError::ShapesMismatch {
+            return Err(ArithmeticError::ShapesMismatch(
                 left_shape.clone(),
                 right_shape.clone(),
-            });
+            ));
         }
 
         let mut result = Tensor::default((left_shape[1], right_shape[0]));

@@ -1,12 +1,13 @@
 [package]
-name = "deep_core"
+name = "deep"
 version = "0.1.1"
 authors = ["tglanz"]
 description = "deep prototype"
 repository = "https://github.com/tglanz/deep"
 readme = "readme.md"
-license-file = "license"
 
 [dependencies]
 serde = "*"
-serde_derive = "*"
+serde_json = "*"
+deep_core = { path = 'core', version = '0.1.1' }
+deep_cpu_backend = { path = 'cpu_backend', version = '0.1.1' }

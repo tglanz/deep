@@ -5,7 +5,7 @@ pub type EdgeId = u16;
 pub type Edges = Vec<Edge>;
 pub type EdgeConnection = (NodeId, NodeId);
 
-#[derive(Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 pub enum Edge {
     OperandEdge { id: EdgeId, connection: EdgeConnection, operand: Operand }
 }
