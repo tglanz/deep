@@ -29,14 +29,6 @@
       }
     },
     {
-      "OperationNode": {
-        "id": 4,
-        "operation": {
-          "Add": null
-        }
-      }
-    },
-    {
       "ParameterNode": {
         "id": 2,
         "tensor_descriptor": {
@@ -46,6 +38,14 @@
               3
             ]
           }
+        }
+      }
+    },
+    {
+      "OperationNode": {
+        "id": 4,
+        "operation": {
+          "Add": null
         }
       }
     },
@@ -71,26 +71,6 @@
   "edges": [
     {
       "OperandEdge": {
-        "id": 9,
-        "connection": [
-          3,
-          4
-        ],
-        "operand": 0
-      }
-    },
-    {
-      "OperandEdge": {
-        "id": 11,
-        "connection": [
-          4,
-          5
-        ],
-        "operand": 0
-      }
-    },
-    {
-      "OperandEdge": {
         "id": 7,
         "connection": [
           0,
@@ -111,10 +91,30 @@
     },
     {
       "OperandEdge": {
+        "id": 9,
+        "connection": [
+          3,
+          4
+        ],
+        "operand": 0
+      }
+    },
+    {
+      "OperandEdge": {
         "id": 10,
         "connection": [
           2,
           4
+        ],
+        "operand": 0
+      }
+    },
+    {
+      "OperandEdge": {
+        "id": 11,
+        "connection": [
+          4,
+          5
         ],
         "operand": 0
       }
