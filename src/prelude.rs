@@ -10,6 +10,7 @@ pub use core::{
             Traverser,
             Visitor,
             UnorderedIterator,
+            TopologicalIterator,
         },
     },
     backend::{

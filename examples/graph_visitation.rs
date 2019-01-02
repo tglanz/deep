@@ -3,33 +3,35 @@ extern crate deep;
 use deep::prelude::*;
 
 fn construct_graph(input_descriptor: &TensorDescriptor,
-                       weights_descriptor: &TensorDescriptor,
-                       bias_descriptor: &TensorDescriptor) -> Graph {
+                   weights_descriptor: &TensorDescriptor,
+                   bias_descriptor: &TensorDescriptor) -> Graph {
     // Some Ids 
     let input_node_id = 0;
     let weights_node_id = 1;
     let bias_node_id = 2;
 
-    let dot_node_id = 1;
-    let add_node_id = 2;
-    let leaky_node_id = 3;
+    let dot_node_id = 3;
+    let add_node_id = 4;
+    let leaky_node_id = 5;
 
     /*
         the computation this graph does is still the same
         leaky(matrix*vector + bias)
+
+        The graph is scrambled purposefuly to show the topological effect
     */
     GraphBuilder::create()
-        .with_input(input_node_id, &input_descriptor)
+        .with_operand(10, bias_node_id, add_node_id, add::operands::INPUT)
         .with_parameter(weights_node_id, &weights_descriptor)
-        .with_parameter(bias_node_id, &bias_descriptor)
-        .with_operation(dot_node_id, dot::operation())
+        .with_operand(9, dot_node_id, add_node_id, add::operands::INPUT)
         .with_operation(add_node_id, add::operation())
+        .with_parameter(bias_node_id, &bias_descriptor)
         .with_operation(leaky_node_id, leaky_relu::operation(0.57))
-        .with_operand(0, input_node_id, dot_node_id, dot::operands::INPUT)
-        .with_operand(1, weights_node_id, dot_node_id, dot::operands::WEIGHTS)
-        .with_operand(2, dot_node_id, add_node_id, add::operands::INPUT)
-        .with_operand(3, bias_node_id, add_node_id, add::operands::INPUT)
-        .with_operand(4, add_node_id, leaky_node_id, leaky_relu::operands::INPUT)
+        .with_operation(dot_node_id, dot::operation())
+        .with_operand(11, add_node_id, leaky_node_id, leaky_relu::operands::INPUT)
+        .with_operand(7, input_node_id, dot_node_id, dot::operands::INPUT)
+        .with_input(input_node_id, &input_descriptor)
+        .with_operand(8, weights_node_id, dot_node_id, dot::operands::WEIGHTS)
         .build(0)
 }
 
@@ -45,7 +47,7 @@ impl AVisitorThatPrintsStuff {
     }
 }
 
-impl Visitor for AVisitorThatPrintsStuff {
+impl<'a> Visitor<'a> for AVisitorThatPrintsStuff {
 
     fn before_visitations(&mut self) {
         println!("Visitor invoked with before_visitations");
@@ -53,7 +55,7 @@ impl Visitor for AVisitorThatPrintsStuff {
         self.nodes_count = 0;
     }
 
-    fn visit_node(&mut self, node: &Node, input_edges: &[&Edge], output_edges: &[&Edge]) {
+    fn visit_node(&mut self, node: &'a Node, input_edges: &[&'a Edge], output_edges: &[&'a Edge]) {
         println!("Visitor invoked with visit_node");
         println!("\t- node id: {}", node.get_id());
         println!("\t- input_edges");
@@ -73,7 +75,7 @@ impl Visitor for AVisitorThatPrintsStuff {
 fn display_the_usage_of_the_traversal_patterns(graph: &Graph) {
     let traverser = Traverser::from_graph(&graph);
     let mut visitor = AVisitorThatPrintsStuff::create();
-    let mut iterator = UnorderedIterator::from_graph(&graph);
+    let mut iterator = TopologicalIterator::from_graph(&graph);
     traverser.traverse(&mut visitor, &mut iterator);
 }
 

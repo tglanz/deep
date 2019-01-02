@@ -18,52 +18,107 @@ use core::{
 };
 
 #[derive(Debug)]
-pub struct TransientTensors;
-
-pub struct CpuBackend {
-    transients: TransientTensors
+pub struct Initializer<'a> {
+    nodes_sequence: Vec<&'a Node>,
+    inputs_sequence: Vec<Vec<&'a Edge>>,
+    outputs_sequence: Vec<Vec<&'a Edge>>
 }
 
-impl CpuBackend {
-    pub fn new() -> Self {
+impl<'a> Initializer<'a> {
+    fn new() -> Self {
         Self {
-            transients: TransientTensors { }
+            nodes_sequence: Vec::new(),
+            inputs_sequence: Vec::new(),
+            outputs_sequence: Vec::new()
         }
     }
 }
 
-impl Visitor for TransientTensors {
+pub struct CpuBackend {
+}
+
+impl CpuBackend {
+    pub fn new() -> Self {
+        Self { }
+    }
+}
+
+impl<'a> Visitor<'a> for Initializer<'a> {
     fn before_visitations(&mut self) {
-        println!("I wanna start allocating stuff for transeint tensors");
+        println!("Initializer statrting to initalize stuff");
     }  
 
     fn visit_node(
         &mut self,
-        node: &Node,
-        input_edges: &[&Edge],
-        output_edges: &[&Edge]
+        node: &'a Node,
+        input_edges: &[&'a Edge],
+        output_edges: &[&'a Edge]
     ) {
-        println!("visiting node:{:#?}", node);
+        let mut inputs = Vec::new();
+        for edge in input_edges {
+            inputs.push(*edge);
+        }
+
+        let mut outputs = Vec::new();
+        for edge in output_edges {
+            outputs.push(*edge);
+        }
+
+        self.nodes_sequence.push(node);
+        self.inputs_sequence.push(inputs);
+        self.outputs_sequence.push(outputs);
     }
 
     fn after_visitations(&mut self) {
-        println!("I should stop allocating stuff for transeint tensors, perhaps this is a good place for some sanity??");
+        println!("Initializer is done initializing stuff");
     }
 }
 
-impl ForwardComputer for CpuBackend {
+impl<'a> ForwardComputer<'a> for CpuBackend {
 
-    type Initializer = TransientTensors;
+    type Initializer = Initializer<'a>;
 
-    fn initializer<'a>(&'a mut self) -> &'a mut Self::Initializer {
-        &mut self.transients
+    fn create_initializer(&mut self) -> Self::Initializer {
+        Initializer::new()
     }
 
-    fn compute<'a>(&'a mut self, inputs: &'a HashMap<TensorId, Tensor<u16>>) {
-        println!("i need to compute stuff");
+    fn compute(&mut self, initializer: Self::Initializer, _inputs: HashMap<TensorId, Tensor<u16>>) {
+        for (index, node) in initializer.nodes_sequence.iter().enumerate() {
+            let current_inputs = &initializer.inputs_sequence[index];
+            let current_outputs = &initializer.outputs_sequence[index];
+
+            match node {
+                Node::ParameterNode { .. } => {
+                    println!("Got a parameter node, i don't think there is something to be done");
+                },
+                Node::InputNode { .. } => {
+                    println!("Got an input node, i don't think there is something to be done");
+                },
+                Node::OperationNode { operation, .. } => {
+                    println!("Got an operation node, finally there is something that should be done!");
+                    println!(" - Operation: {:#?}", operation);
+                    println!(" - Inputs:");
+                    for edge in current_inputs {
+                        match edge {
+                            Edge::OperandEdge { operand, .. } => {
+                                println!("    - Operand: {:#?}", operand);
+                            }
+                        }
+                    }
+                    println!(" - Outputs:");
+                    for edge in current_outputs {
+                        match edge {
+                            Edge::OperandEdge { operand, .. } => {
+                                println!("    - Operand: {:#?}", operand);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
-    fn collect<'a>(&'a self) -> HashMap<TensorId, Tensor<u16>> {
+    fn collect(&self) -> HashMap<TensorId, Tensor<u16>> {
         HashMap::new()
     }
 }

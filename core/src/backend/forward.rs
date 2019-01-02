@@ -10,11 +10,11 @@ use super::super::{
     },
 };
 
-pub trait ForwardComputer {
+pub trait ForwardComputer<'a> {
 
-    type Initializer: Visitor;
+    type Initializer: Visitor<'a>;
 
-    fn initializer<'a>(&'a mut self) -> &'a mut Self::Initializer;
-    fn compute<'a>(&'a mut self, inputs: &'a HashMap<TensorId, Tensor<u16>>);
-    fn collect<'a>(&'a self) -> HashMap<TensorId, Tensor<u16>>;
+    fn create_initializer(&mut self) -> Self::Initializer;
+    fn compute(&mut self, initializer: Self::Initializer, inputs: HashMap<TensorId, Tensor<u16>>);
+    fn collect(&self) -> HashMap<TensorId, Tensor<u16>>;
 }

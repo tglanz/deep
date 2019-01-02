@@ -23,6 +23,7 @@ impl<'a> Iterator for UnorderedIterator<'a> {
     fn next(&mut self) -> Option<Self::Item> {
         let item = self.nodes.get(self.cursor);
         self.cursor += 1;
+        println!("cursor {:#?}", self.cursor);
         item
     }
 }

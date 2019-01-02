@@ -22,7 +22,7 @@ impl<'a> Traverser<'a> {
         }
     }
 
-    pub fn traverse<TVisitor: Visitor, TIterator>(&self, visitor: &mut TVisitor, iterator: &mut TIterator)
+    pub fn traverse<TVisitor: Visitor<'a>, TIterator>(&self, visitor: &mut TVisitor, iterator: &mut TIterator)
         where
             TIterator: Iterator<Item = &'a Node> {
         
